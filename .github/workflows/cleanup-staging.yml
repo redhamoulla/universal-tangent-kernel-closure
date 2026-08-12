@@ -1,0 +1,33 @@
+name: Remove temporary upload fragments
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".payload/**"
+      - ".source/**"
+      - ".github/source_payload/**"
+      - "paper/.parts/**"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove temporary upload files
+        run: |
+          rm -rf .payload .source .github/source_payload paper/.parts
+
+      - name: Commit cleanup
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Remove temporary upload fragments"
+          file_pattern: ".payload .source .github/source_payload paper/.parts"

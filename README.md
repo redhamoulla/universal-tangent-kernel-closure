@@ -47,7 +47,7 @@ cd paper
 latexmk -pdf universal_tangent_kernel_closure.tex
 ```
 
-The checked-in PDF is rebuilt from the LaTeX source by GitHub Actions.
+GitHub Actions recompiles the LaTeX source and publishes the generated PDF as a workflow artifact on every paper update.
 
 ## Author
 

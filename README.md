@@ -1,6 +1,6 @@
 # Universal Tangent-Kernel Closure in Two-Factor Linear Networks, and Its Failure Beyond
 
-[![Build paper](https://github.com/redhamoulla/universal-tangent-kernel-closure/actions/workflows/materialize-paper.yml/badge.svg)](https://github.com/redhamoulla/universal-tangent-kernel-closure/actions/workflows/materialize-paper.yml)
+[![Build paper](https://github.com/redhamoulla/universal-tangent-kernel-closure/actions/workflows/build-paper.yml/badge.svg)](https://github.com/redhamoulla/universal-tangent-kernel-closure/actions/workflows/build-paper.yml)
 
 This repository contains the theoretical note by **Redha Moulla — AXIA, France** on exact finite-width tangent-kernel closure in linear networks.
 

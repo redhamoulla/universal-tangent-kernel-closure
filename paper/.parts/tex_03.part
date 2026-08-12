@@ -1,0 +1,48 @@
+\section{Interpretation and scope}
+\label{sec:interpretation}
+
+\subsection{What the two-factor theorem says}
+
+The strongest statement in this note is not that the kernel formula is difficult to derive.  It is that, for two factors, the entire hidden representation can be quotiented out of the instantaneous joint dynamics for arbitrary data and loss.  This quotient is universal across balancing leaves.  The price is degeneracy: the reduced kernel equation is driven by prediction and contains no direct $K$-feedback.  Thus exact closure and nontrivial kernel-space constitutive geometry are different questions.  The present model answers the first and largely dissolves the second.
+
+The Volterra representation sharpens the same point.  Eliminating a known active variable can manufacture an exact memory equation without making the underlying system non-Markovian.  Conversely, the deep-linear obstruction at three factors does not itself imply memory: the missing coordinate is conserved, and leaf conditioning suffices.  Three distinct situations must therefore be kept separate:
+\begin{equation}
+  \text{universal closure},
+  \qquad
+  \text{closure after a static label},
+  \qquad
+  \text{history required after elimination}.
+\end{equation}
+The two-factor system realizes the first and third descriptions under different observables; scalar depth three realizes the second.
+
+\subsection{Reachable sets and nonlinear networks}
+
+The positive two-factor theorem holds on the full parameter space, so it automatically holds on every training-reachable subset.  The negative result in \cref{thm:fiber-obstruction} is an obstruction to a universal law on the full positive scalar deep-linear space.  A narrower initialization manifold or a single invariant leaf may still admit closure; \cref{prop:leaf-closure} gives this explicitly.  The practically important balanced case is therefore worth naming.  Exactly balanced initialization lies on $c=0$, where all $q_i=s$, hence $K=d s^{d-1}$ and
+\[
+  \dot K=-2d(d-1)fr\left(\frac{K}{d}\right)^{\frac{d-2}{d-1}}.
+\]
+At $d=2$ this recovers $\dot K=-4fr$; from $d=3$ onward, restricting to the balanced leaf restores the direct $K$-dependence absent from the universal two-factor law.  Moreover, under the small-scale parameterization standard in deep-linear analyses \citep{saxe2014deep,arora2018optimization,du2018balanced}, $w_i(0)=\varepsilon\xi_i$ with $\xi_i=O(1)$,
+\begin{equation}
+  c_i(0)=q_i(0)-q_d(0)
+  =\varepsilon^2\bigl(\xi_i^2-\xi_d^2\bigr)\longrightarrow0
+  \qquad (\varepsilon\to0).
+  \label{eq:near-balanced-initialization}
+\end{equation}
+Thus small initialization starts near the balanced leaf in absolute scale.  Since the $c_i$ remain constant, whenever the common scale grows the relative imbalances $|q_i-q_j|/\bar q$ decrease even though their absolute values do not.  The theorem limits global leaf-independent universality; by itself it does not establish practical nonclosure along balanced or near-balanced training trajectories.
+
+For a smooth nonlinear network, the analogous projectability problem is structurally different: $\dot K$ contains Hessian contractions, and generic parameter-space fibers need not reflect the fibers actually reached from a standard initialization.  A credible empirical projectability study must therefore sample states along real training trajectories, restrict vertical directions to the reachable set when possible, and scale the number of observations with model dimension.  Generic Gaussian parameter states, a fixed two-point dataset, or a finite matched-pair separation cannot by themselves establish failure on the training-relevant manifold.  Those diagnostics belong to a separate empirical study rather than to the present theorem note.
+
+\subsection{Limitations}
+
+The universal closure theorem concerns scalar-output, bias-free, two-factor linear networks.  Input biases may be absorbed by homogeneous coordinates, whereas a separately trained output bias enlarges the state.  The failure theorem is proved in the scalar width-one deep-linear subclass; it suffices to disprove a universal extension to all deeper factorizations, but it is not a classification of matrix-valued depth-three networks.  The Volterra equation is exact after conditioning on $K_0$ and is nonconvolutional; projections with a nonzero orthogonal remainder fall outside this derivation.  Discrete gradient descent, momentum, stochastic gradients, nonlinear activations, and Riemannian kernel geometry are separate extensions.
+
+\section{Conclusion}
+
+Two-factor linear networks provide an exact finite-width closure that is broader than the special regimes in which their learning dynamics are usually solved.  For arbitrary finite data, differentiable loss, hidden width, and input dimension, the parameter flow projects to $(f,K)$, independently of the balancing leaf.  The resulting law is driven rather than kernel-autonomous, and exact elimination of $K$ turns it into a full-history Volterra equation for $f$.  The same dynamics are therefore Markovian or memory-bearing according to the observable retained.
+
+The scalar deep-linear hierarchy pinpoints the first rupture.  From three factors onward, generic fibers with fixed output and fixed tangent kernel carry varying $e_{d-2}$ and hence varying kernel velocity.  This failure is not irreducible memory: balancing labels restore closure, and at depth three the required invariant coordinate completes the symmetric hierarchy.  The transition is thus from universal leaf-independent closure to leaf-conditioned closure.  Whether analogous reductions hold on training-reachable sets of nonlinear networks is a separate empirical question.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

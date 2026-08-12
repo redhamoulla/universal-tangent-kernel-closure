@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools,bm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalize,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={Universal Tangent-Kernel Closure in Two-Factor Linear Networks, and Its Failure Beyond},
+  pdfauthor={Redha Moulla}
+}
+
+\setlist[itemize]{leftmargin=1.5em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=0.25em,topsep=0.4em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{remark*}{Remark}
+
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Spos}{\mathbb{S}_{+}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Ker}{\operatorname{ker}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{\bfseries Universal Tangent-Kernel Closure in Two-Factor Linear Networks,\\
+and Its Failure Beyond}
+\author{Redha Moulla\\[2mm]\small AXIA, France}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Finite-width gradient flow in a two-factor linear network admits an exact projection from factor space to the joint prediction--kernel state $(f,K)$.  For every scalar-output bias-free model
+\[
+  f=XW^\top a,
+  \qquad G=XX^\top,
+\]
+with arbitrary hidden width, input dimension, finite dataset, and differentiable loss, the answer is yes:
+\[
+  K=XW^\top WX^\top+\norm{a}^2G,
+  \qquad
+  \dot K=-(Gr)f^\top-f(Gr)^\top-2(f^\top r)G.
+\]
+The contribution is the closure statement and its consequences: the parameter representation disappears globally, the law is independent of the nontrivial balancing leaf $WW^\top-aa^\top$, and the kernel equation is driven by $(f,r)$ rather than by $K$ itself.  Eliminating $K$ gives an exact prediction-only Volterra equation with full, non-fading history and no remainder once $K_0$ is fixed.  Thus the same dynamics are Markovian in $(f,K)$ and memory-bearing in $f$ alone.
+
+For scalar deep-linear networks, we derive the finite hierarchy
+\[
+  \dot e_k=-2fr(d-k+1)e_{k-1},
+  \qquad K=e_{d-1},
+  \qquad \dot K=-4fr e_{d-2}.
+\]
+At two factors, $e_{d-2}=1$ and the universal closure holds.  From three factors onward, regular fibers of $(e_d,e_{d-1})$ contain curves along which $e_{d-2}$ varies, so no leaf-independent law $\dot K=\mathcal F(f,K,r)$ exists on the full positive state space.  Conditioning on the conserved balancing leaf restores exact closure; at depth three, $(f,K,I)$ is simply the complete symmetric state in invariant coordinates.  The result is therefore a precise transition from universal driven closure to leaf-conditioned closure.  It also separates memory created by eliminating an observable from the distinct closure problem posed by nonlinear networks.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+
+Let a scalar-output model be evaluated on a finite dataset $\{x_i\}_{i=1}^n$.  Write
+\begin{equation}
+  f(w)=\bigl(f(x_1;w),\ldots,f(x_n;w)\bigr)^\top\in\R^n,
+  \qquad
+  J(w)=D_w f(w)\in\R^{n\times p},
+\end{equation}
+and define the empirical tangent kernel
+\begin{equation}
+  K(w)=J(w)J(w)^\top\in\Spos^n.
+\end{equation}
+For a differentiable loss $L(w)=\ell(f(w))$, let $r(f)=\nabla_f\ell(f)$.  Euclidean gradient flow gives
+\begin{equation}
+  \dot w=-J^\top r,
+  \qquad
+  \dot f=-Kr,
+  \qquad
+  \dot L=-r^\top Kr\leq0.
+  \label{eq:basic-flow}
+\end{equation}
+At infinite width, the neural tangent kernel may become asymptotically constant, yielding a closed function-space description \citep{jacot2018ntk,lee2019linearized}.  At finite width, differentiating $K$ generally introduces higher derivatives and leads to the neural tangent hierarchy \citep{huang2020nth}.
+
+The question here is exact and finite-dimensional.  On a parameter domain $\mathcal D$, call $(f,K)$ a \emph{closed state} if there exists a single-valued map $\mathcal F$ such that
+\begin{equation}
+  \dot K(w)=\mathcal F\bigl(f(w),K(w),r(f(w))\bigr)
+  \qquad \text{for every }w\in\mathcal D.
+  \label{eq:closure-definition}
+\end{equation}
+Equivalently, the parameter-space vector field for $\dot K$ factors through the observation map $w\mapsto(f,K)$.  This is stronger than having an equation along one trajectory and weaker than demanding an autonomous field on kernel space alone.
+
+The main positive result is an exact closure for every bias-free two-factor linear network with scalar output.  It is universal with respect to hidden width, input dimension, finite dataset, differentiable loss, and parameter state.  It is also structurally degenerate: $K$ drives $f$ through \eqref{eq:basic-flow}, but $\dot K$ has no direct dependence on $K$.  Once the prediction path is known, the kernel follows by quadrature.  This one-sided structure permits exact elimination of $K$, producing a prediction-only equation with explicit memory.
+
+The scalar deep-linear hierarchy then identifies the first failure of this property.  Two factors close because the hierarchy terminates at the constant $e_0=1$.  At three factors, the kernel velocity depends on $e_1$, which varies along regular fibers with fixed output and fixed tangent kernel.  The missing information is not an active hidden state in this solvable model: squared-layer differences are conserved, and conditioning on the balancing leaf restores a Markovian closure.
+
+\paragraph{Relation to prior work and contribution.}
+The decomposition
+\[
+  K(x,x')=x^\top W^\top W x'+\norm{a}^2x^\top x'
+\]
+appears explicitly in analyses of two-layer linear alignment, including the silent-alignment study of \citet{atanasov2022silent}.  Earlier work develops exact and asymptotic dynamics for two-factor and deep-linear networks, balancing laws, and structured mode-wise solutions \citep{saxe2014deep,arora2018optimization,du2018balanced,xu2025three}.  This note places these ingredients in an exact state-reduction framework and establishes four linked results:
+\begin{enumerate}
+  \item the full parameter vector field projects globally to $(f,K)$ for arbitrary finite data and differentiable loss, without whitening, teacher, small-initialization, or mode-decoupling assumptions;
+  \item the projected law is independent of the nontrivial balancing leaf, yet is driven rather than kernel-autonomous;
+  \item exact elimination of the driven variable produces a non-fading Volterra representation of the same dynamics;
+  \item the first scalar deep-linear failure is characterized directly by the geometry of the fibers, and exact closure is recovered after conditioning on conserved leaf coordinates.
+\end{enumerate}
+Together, these results identify a global projectability law at two factors and locate the first scalar factorization at which conserved leaf information becomes dynamically necessary.
+

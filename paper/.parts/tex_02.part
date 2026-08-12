@@ -1,0 +1,207 @@
+\section{Scalar deep-linear hierarchy and failure beyond two factors}
+\label{sec:deep-linear}
+
+Consider the scalar width-one depth-$d$ linear network
+\begin{equation}
+  f(w)=\prod_{i=1}^d w_i
+  \label{eq:scalar-network}
+\end{equation}
+with scalar residual $r=\ell'(f)$.  On a fixed sign component, put
+\begin{equation}
+  q_i=w_i^2>0,
+  \qquad
+  e_k(q)=\sum_{1\leq i_1<\cdots<i_k\leq d}q_{i_1}\cdots q_{i_k},
+  \qquad e_0=1.
+\end{equation}
+Then $f^2=e_d$ and
+\begin{equation}
+  K=\sum_{i=1}^d\left(\frac{\partial f}{\partial w_i}\right)^2
+  =e_{d-1}(q).
+  \label{eq:scalar-K}
+\end{equation}
+Gradient flow gives the common translation law
+\begin{equation}
+  \dot q_i=-2fr
+  \qquad \text{for every }i.
+  \label{eq:q-common-velocity}
+\end{equation}
+
+\begin{proposition}[Finite symmetric-polynomial hierarchy]
+\label[proposition]{prop:symmetric-hierarchy}
+For $k=1,\ldots,d$,
+\begin{equation}
+  \boxed{\dot e_k=-2fr(d-k+1)e_{k-1}.}
+  \label{eq:hierarchy}
+\end{equation}
+In particular,
+\begin{equation}
+  \dot f=-e_{d-1}r=-Kr,
+  \qquad
+  \boxed{\dot K=-4fr e_{d-2}.}
+  \label{eq:K-hierarchy}
+\end{equation}
+Thus $(f,e_1,\ldots,e_{d-1})$ is an exact finite-dimensional state.
+\end{proposition}
+
+\begin{proof}
+Since every $q_i$ has velocity $-2fr$,
+\begin{equation}
+  \dot e_k=-2fr\sum_{i=1}^d\frac{\partial e_k}{\partial q_i}.
+\end{equation}
+Every monomial of degree $k-1$ occurs in exactly $d-k+1$ of the derivatives, so
+\begin{equation}
+  \sum_i\frac{\partial e_k}{\partial q_i}=(d-k+1)e_{k-1}.
+\end{equation}
+The stated equations follow.
+\end{proof}
+
+At $d=1$, $K\equiv1$.  At $d=2$, \eqref{eq:K-hierarchy} gives
+\begin{equation}
+  \dot f=-Kr,
+  \qquad
+  \dot K=-4fr,
+  \label{eq:scalar-depth-two}
+\end{equation}
+which is the scalar specialization of \cref{prop:two-factor-closure}.  From $d=3$ onward, $e_{d-2}$ is a new coordinate.  The next theorem shows directly that it is not determined by $(f,K)$ on generic fibers.
+
+\begin{theorem}[Regular-fiber obstruction from three factors onward]
+\label[theorem]{thm:fiber-obstruction}
+Let $d\geq3$ and define
+\begin{equation}
+  \pi_d(q)=\bigl(e_d(q),e_{d-1}(q)\bigr),
+  \qquad q\in\R_{>0}^d.
+\end{equation}
+At every point for which the reciprocals $u_i=1/q_i$ take at least three distinct values,
+\begin{equation}
+  \rank D\bigl(e_d,e_{d-1},e_{d-2}\bigr)=3.
+  \label{eq:rank-three}
+\end{equation}
+Consequently, the fiber of $\pi_d$ is locally a smooth manifold of dimension $d-2$ containing curves along which $e_{d-2}$ is nonconstant.  For $d=3$ the fiber itself is locally a curve, and $e_1$ varies along it.
+
+Therefore, for any loss and output value with $fr\neq0$, there is no leaf-independent single-valued law
+\begin{equation}
+  \dot K=\mathcal F(f,K,r)
+  \label{eq:no-closure}
+\end{equation}
+on the full positive state space.  Three factors are the first scalar linear architecture at which the universal two-factor closure fails.
+\end{theorem}
+
+\begin{proof}
+The change of variables $u_i=1/q_i$ is a diffeomorphism of the positive orthant.  Put
+\begin{equation}
+  P=e_d(q),
+  \qquad
+  S=\frac{e_{d-1}(q)}{e_d(q)}=\sum_i u_i,
+  \qquad
+  T=\frac{e_{d-2}(q)}{e_d(q)}=\sum_{i<j}u_i u_j.
+  \label{eq:reciprocal-coordinates}
+\end{equation}
+The transformations $(e_d,e_{d-1},e_{d-2})\leftrightarrow(\log P,S,T)$ are locally invertible for $P>0$, so it suffices to study the differentials in $u$-coordinates:
+\begin{equation}
+  \dd\log P=-\sum_i\frac{\dd u_i}{u_i},
+  \qquad
+  \dd S=\sum_i\dd u_i,
+  \qquad
+  \dd T=\sum_i(S-u_i)\dd u_i.
+  \label{eq:three-differentials}
+\end{equation}
+The first two forms are independent unless all $u_i$ are equal.  Suppose that $\dd T=A\,\dd S+B\,\dd\log P$.  Comparing the coefficient of $\dd u_i$ gives
+\begin{equation}
+  S-u_i=A-\frac{B}{u_i}.
+\end{equation}
+Hence every $u_i$ is a root of the same quadratic
+\begin{equation}
+  z^2-(S-A)z-B=0.
+\end{equation}
+This is impossible when at least three distinct reciprocal values occur.  The three differentials are therefore independent, proving \eqref{eq:rank-three}.
+
+The constant-rank theorem now makes the level set of $(e_d,e_{d-1})$ a local manifold of dimension $d-2$.  Since $\dd e_{d-2}$ is not in the span of $\dd e_d$ and $\dd e_{d-1}$, it has a nonzero derivative in some tangent direction to that fiber; a smooth curve tangent to that direction keeps $(e_d,e_{d-1})$ fixed while changing $e_{d-2}$.  Along the positive sign component, fixed $e_d$ means fixed $f$, and fixed $e_{d-1}$ means fixed $K$.  Equation \eqref{eq:K-hierarchy} then gives different values of $\dot K$ whenever $fr\neq0$.
+\end{proof}
+
+\begin{remark*}[Explicit depth-three witness]
+For $d=3$, take
+\[
+  q^A=\left(\frac25,\frac54,2\right),
+  \qquad
+  q^B=\left(\frac59,\frac35,3\right).
+\]
+Then $e_3(q^A)=e_3(q^B)=1$ and $e_2(q^A)=e_2(q^B)=19/5$, whereas
+\[
+  e_1(q^A)=\frac{73}{20},
+  \qquad
+  e_1(q^B)=\frac{187}{45}.
+\]
+Thus the two states have the same positive output $f=1$ and the same tangent kernel $K=19/5$, but \eqref{eq:K-hierarchy} gives different kernel velocities whenever $r(1)\neq0$.
+\end{remark*}
+
+The condition of three distinct reciprocal coordinates is open and dense.  The obstruction is therefore not an isolated pair of parameter states but a generic local property of the positive deep-linear state space.  It rules out a \emph{universal} closure on that space.  It does not rule out closure on a selected invariant leaf or on a more restrictive set of trajectories.
+
+\subsection{Exact closure on each balancing leaf}
+
+Equation \eqref{eq:q-common-velocity} implies that
+\begin{equation}
+  c_i=q_i-q_d,
+  \qquad i=1,\ldots,d-1,
+  \qquad \dot c_i=0.
+  \label{eq:leaf-labels}
+\end{equation}
+Fix a positive leaf $c$ and write $q_d=s$, $q_i=s+c_i$.  Define
+\begin{equation}
+  \kappa_c(s)=e_{d-1}(s+c_1,\ldots,s+c_{d-1},s).
+\end{equation}
+
+\begin{proposition}[Leaf-conditioned exact closure]
+\label[proposition]{prop:leaf-closure}
+On every interval where all $q_i$ are positive,
+\begin{equation}
+  \kappa_c'(s)=2e_{d-2}(q(s,c))>0.
+  \label{eq:kappa-derivative}
+\end{equation}
+Hence $s=\kappa_c^{-1}(K)$ and
+\begin{equation}
+  \boxed{
+  \dot K=-4fr\,e_{d-2}\bigl(q(\kappa_c^{-1}(K),c)\bigr),
+  \qquad \dot c=0.}
+  \label{eq:leaf-closure}
+\end{equation}
+Thus the failure in \cref{thm:fiber-obstruction} is transverse to the balancing foliation: a conserved label, not temporal history, restores exact closure.
+\end{proposition}
+
+\begin{proof}
+Differentiation under a common translation and \cref{prop:symmetric-hierarchy} give
+\begin{equation}
+  \frac{\dd}{\dd s}e_{d-1}(q(s,c))=2e_{d-2}(q(s,c)).
+\end{equation}
+Positivity makes this derivative strictly positive.  Inversion and \eqref{eq:K-hierarchy} yield \eqref{eq:leaf-closure}.
+\end{proof}
+
+\subsection{Depth three in invariant coordinates}
+
+For $d=3$, let
+\begin{equation}
+  I(q)=\frac12\sum_{i=1}^3(q_i-\bar q)^2,
+  \qquad
+  \bar q=\frac13e_1(q).
+  \label{eq:I}
+\end{equation}
+The common translation \eqref{eq:q-common-velocity} gives $\dot I=0$, and
+\begin{equation}
+  I=\frac{e_1^2}{3}-e_2.
+  \label{eq:I-identity}
+\end{equation}
+Since $K=e_2$ and $q_i>0$,
+\begin{equation}
+  e_1=\sqrt{3(K+I)}.
+\end{equation}
+The exact closed system is therefore
+\begin{equation}
+  \boxed{
+  \dot f=-Kr,
+  \qquad
+  \dot K=-4fr\sqrt{3(K+I)},
+  \qquad
+  \dot I=0.}
+  \label{eq:depth-three-closure}
+\end{equation}
+Because $f^2=e_3$, $K=e_2$, and $I$ recovers $e_1$, the state $(f,K,I)$ is simply the complete symmetric state $(e_3,e_2,e_1)$ written in invariant coordinates.  The one-scalar augmentation is not a further compression of the hierarchy.
+
